@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JEFCK Community • Payment Hub</title>
+  <meta name="description" content="Métodos de pago oficiales — JEFCK Community" />
+
+  <style>
+    :root{
+      --bg:#070708;
+      --card:#0f1013;
+      --text:#eaeaea;
+      --muted:#b7b7b7;
+      --gold:#f5c400;
+      --gold2:#ff8a00;
+      --stroke:rgba(255,200,0,.25);
+      --shadow: 0 14px 40px rgba(0,0,0,.55);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1200px 600px at 50% -10%, rgba(255,140,0,.20), transparent 55%),
+                  radial-gradient(900px 600px at 20% 0%, rgba(245,196,0,.16), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:980px;margin:0 auto;padding:28px 18px 44px}
+
+    /* Header */
+    .top{
+      display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+      padding:18px 18px;border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,200,0,.08), rgba(0,0,0,0));
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .brand{display:flex;gap:14px;align-items:center;min-width:260px}
+    .logoBox{
+      width:56px;height:56px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+      box-shadow: 0 10px 30px rgba(255,140,0,.18);
+    }
+    .logoBox img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .title{line-height:1.05}
+    .title h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:.8px;
+      background: linear-gradient(90deg, #fff, #ffe08a, #ffb300);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .title p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .ctaRow{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{
+      padding:10px 12px;border-radius:999px;border:1px solid var(--stroke);
+      background: rgba(255,200,0,.06);
+      color:#ffe7a6;font-weight:700;font-size:13px;
+    }
+
+    /* Layout */
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+    }
+    .card{
+      grid-column: span 12;
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,200,0,.06), rgba(0,0,0,0)),
+                  var(--card);
+      border:1px solid rgba(255,200,0,.14);
+      box-shadow:var(--shadow);
+      padding:16px;
+    }
+    @media(min-width:760px){
+      .card.half{grid-column: span 6;}
+      .card.third{grid-column: span 4;}
+    }
+    .cardHeader{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .cardHeader h2{margin:0;font-size:16px;letter-spacing:.3px}
+    .tag{
+      font-size:12px;color:#ffde7a;background:rgba(255,200,0,.08);
+      border:1px solid rgba(255,200,0,.20);
+      padding:6px 10px;border-radius:999px;
+    }
+    .row{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+      margin-top:10px;
+    }
+    .value{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: rgba(255,255,255,.04);
+      border:1px dashed rgba(255,200,0,.20);
+      padding:10px 12px;border-radius:14px;
+      color:#fff;
+      overflow:auto;
+      max-width:100%;
+      word-break:break-all;
+    }
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:12px 14px;border-radius:14px;border:1px solid rgba(255,200,0,.25);
+      background: linear-gradient(135deg, rgba(245,196,0,.16), rgba(255,138,0,.12));
+      color:#fff;font-weight:800;
+      cursor:pointer;
+      transition:.15s transform ease, .15s opacity ease;
+    }
+    .btn:hover{transform:translateY(-1px);opacity:.95}
+    .btn:active{transform:translateY(0px);opacity:.9}
+    .btn.secondary{
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      color:#eaeaea;
+      font-weight:700;
+    }
+    .note{margin-top:10px;color:var(--muted);font-size:13px;line-height:1.45}
+    .small{font-size:12px;color:rgba(255,255,255,.70);margin:8px 0 0;line-height:1.7}
+    .ok{
+      display:none;
+      margin-top:10px;
+      padding:10px 12px;border-radius:14px;
+      border:1px solid rgba(0,255,150,.20);
+      background: rgba(0,255,150,.06);
+      color:#c8ffe8;
+      font-weight:700;
+      font-size:13px;
+    }
+    .footer{
+      margin-top:16px;
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+      text-align:center;
+    }
+
+    /* Banner (optional) */
+    .banner{
+      margin-top:14px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,200,0,.14);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      background: rgba(255,255,255,.02);
+    }
+    .banner img{width:100%;height:auto;display:block}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- HEADER -->
+    <header class="top">
+      <div class="brand">
+        <!-- LOGO:
+          1) Crea una carpeta "assets"
+          2) Pon tu logo ahí con este nombre: assets/jefck-logo.png
+          (puede ser PNG/JPG, solo respeta el nombre o cambia el src)
+        -->
+        <div class="logoBox" aria-label="JEFCK Logo">
+          <img src="assets/jefck-logo.png" alt="JEFCK Community Logo">
+        </div>
+
+        <div class="title">
+          <h1>JEFCK COMMUNITY • PAYMENT HUB</h1>
+          <p>Métodos de pago oficiales. En la nota escribe tu <b>@Discord</b>.</p>
+        </div>
+      </div>
+
+      <div class="ctaRow">
+        <span class="pill">⚡ Rápido</span>
+        <span class="pill">🔒 Seguro</span>
+        <span class="pill">💳 Varios métodos</span>
+      </div>
+    </header>
+
+    <!-- (Opcional) Banner grande tipo portada:
+      Sube tu banner como: assets/jefck-banner.jpg
+      y descomenta este bloque.
+    -->
+    <!--
+    <div class="banner">
+      <img src="assets/jefck-banner.jpg" alt="JEFCK Community Banner">
+    </div>
+    -->
+
+    <div class="grid">
+
+      <!-- PAYPAL -->
+      <section class="card half">
+        <div class="cardHeader">
+          <h2>PayPal</h2>
+          <span class="tag">Monto libre</span>
+        </div>
+
+        <div class="value" id="paypalLink">https://paypal.me/JEFCKcommunity</div>
+
+        <div class="row">
+          <a class="btn" href="https://paypal.me/JEFCKcommunity" target="_blank" rel="noopener">Abrir PayPal ↗</a>
+          <button class="btn secondary" type="button" onclick="copyText('paypalLink')">Copiar link</button>
+        </div>
+
+        <p class="note">En la nota del pago escribe: <b>@tuDiscord</b> + lo que estás comprando.</p>
+      </section>
+
+      <!-- CASH APP -->
+      <section class="card half">
+        <div class="cardHeader">
+          <h2>Cash App</h2>
+          <span class="tag">USA</span>
+        </div>
+
+        <div class="value" id="cashappLink">https://cash.app/$Elvys2804</div>
+
+        <div class="row">
+          <a class="btn" href="https://cash.app/$Elvys2804" target="_blank" rel="noopener">Abrir Cash App ↗</a>
+          <button class="btn secondary" type="button" onclick="copyText('cashappLink')">Copiar link</button>
+        </div>
+
+        <p class="note">Verifica el nombre del destinatario antes de enviar.</p>
+      </section>
+
+      <!-- ZELLE -->
+      <section class="card half">
+        <div class="cardHeader">
+          <h2>Zelle</h2>
+          <span class="tag">Teléfono / Email</span>
+        </div>
+
+        <div class="value" id="zelleId">(646) 352-2482 • elvys.rosario25@gmail.com</div>
+
+        <div class="row">
+          <button class="btn" type="button" onclick="copyText('zelleId')">Copiar Zelle</button>
+          <button class="btn secondary" type="button" onclick="openHowToZelle()">Cómo enviar</button>
+        </div>
+
+        <p class="note">En memo/nota: <b>@tuDiscord</b> + producto/servicio.</p>
+      </section>
+
+      <!-- VENMO -->
+      <section class="card half">
+        <div class="cardHeader">
+          <h2>Venmo</h2>
+          <span class="tag">USA</span>
+        </div>
+
+        <div class="value" id="venmoLink">https://venmo.com/u/Elvys-Rosario-1</div>
+
+        <div class="row">
+          <a class="btn" href="https://venmo.com/u/Elvys-Rosario-1" target="_blank" rel="noopener">Abrir Venmo ↗</a>
+          <button class="btn secondary" type="button" onclick="copyText('venmoLink')">Copiar link</button>
+        </div>
+
+        <p class="note">En la nota escribe tu <b>@Discord</b> para confirmar rápido.</p>
+      </section>
+
+      <!-- TICKETS / INSTRUCCIONES -->
+      <section class="card">
+        <div class="cardHeader">
+          <h2>🎫 Confirmación por Ticket</h2>
+          <span class="tag">Importante</span>
+        </div>
+
+        <p class="small">
+          1) Haz el pago • 2) Abre un ticket • 3) Pega el mensaje copiado + adjunta screenshot/ID de transacción.
+          <br>
+          <b>Tip:</b> escribe tu <b>@Discord</b> en la nota del pago para evitar confusiones.
+        </p>
+
+        <div class="row" style="margin-top:12px">
+          <!-- Reemplaza ESTE invite por el tuyo (discord.gg/XXXX) -->
+          <a class="btn" href="https://discord.gg/4SNW7cHNT3" target="_blank" rel="noopener">Abrir Ticket ↗</a>
+
+          <button class="btn secondary" type="button" onclick="copyTicketMsg()">Copiar mensaje para el ticket</button>
+
+          <!-- (Opcional) link directo al canal (solo funciona si ya están dentro del server) -->
+          <!--
+          <a class="btn secondary" href="https://discord.com/channels/SERVER_ID/CANAL_ID" target="_blank" rel="noopener">
+            Ir al canal de tickets ↗
+          </a>
+          -->
+        </div>
+
+        <div class="ok" id="toast">✅ Copiado</div>
+
+        <p class="note">
+          ⚠️ Nunca compartas info personal en público. Usa el ticket para confirmar.
+        </p>
+      </section>
+
+      <!-- REGLAS EXTRA (opcional) -->
+      <section class="card">
+        <div class="cardHeader">
+          <h2>📌 Reglas rápidas de pago</h2>
+          <span class="tag">Anti-fraude</span>
+        </div>
+        <ul class="small">
+          <li>Solo paga a los enlaces de esta página.</li>
+          <li>Incluye tu <b>@Discord</b> + producto/servicio en la nota.</li>
+          <li>En el ticket manda <b>screenshot</b> o <b>ID</b> de transacción.</li>
+          <li>Si alguien te escribe por DM pidiendo pago, <b>verifica</b> primero en el server.</li>
+        </ul>
+      </section>
+
+    </div>
+
+    <div class="footer">
+      © <span id="year"></span> JEFCK Community • Payment Hub
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    async function copyText(elementId){
+      const el = document.getElementById(elementId);
+      const text = (el.innerText || el.textContent || "").trim();
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast("✅ Copiado: " + text);
+      }catch(e){
+        const temp = document.createElement("textarea");
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        temp.remove();
+        showToast("✅ Copiado");
+      }
+    }
+
+    function copyTicketMsg(){
+      const msg =
+`Hola, vengo desde la página de pagos (JEFCK).
+
+✅ Método: (PayPal / Cash App / Zelle / Venmo)
+✅ Monto: $
+✅ Username Discord: @TUUSUARIO
+✅ Producto/Servicio:
+✅ Transaction ID / Screenshot: (adjunto)
+
+Gracias.`;
+
+      navigator.clipboard.writeText(msg);
+      showToast("✅ Mensaje del ticket copiado. Pégalo en el ticket.");
+    }
+
+    function showToast(msg){
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(()=> t.style.display="none", 2400);
+    }
+
+    function openHowToZelle(){
+      alert(
+        "Zelle (pasos):\n\n" +
+        "1) Abre tu app bancaria → Zelle → Send money.\n" +
+        "2) Pega el teléfono o email de la página.\n" +
+        "3) En memo pon: @tuDiscord + producto.\n" +
+        "4) Verifica el nombre del destinatario antes de enviar."
+      );
+    }
+  </script>
+</body>
+</html>
